@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pickle Shots | Biele Street</title>
+  <meta name="description" content="Meet Dirty Sanchez and order Biele Street pickle shots for pickup." />
+
+  <style>
+    :root{
+      --bg:#04070A;
+      --bg2:#101114;
+      --text:#f4f4f0;
+      --muted:#afb2b8;
+      --line:#1f2125;
+      --accent:#ff5a36;
+      --accent2:#cb3b1b;
+      --green:#5a9020;
+      --green2:#4a7a18;
+    }
+
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      font-family:'Arial', sans-serif;
+      background:var(--bg);
+      color:var(--text);
+    }
+
+    a{text-decoration:none;color:inherit}
+    img{display:block;max-width:100%}
+
+    /* ─── HEADER ─────────────────────────────── */
+    .site-header{
+      position:sticky;
+      top:0;
+      z-index:1000;
+      background:rgba(4,7,10,.97);
+      border-bottom:1px solid var(--line);
+      backdrop-filter:blur(12px);
+    }
+
+    .header-inner{
+      position:relative;
+      height:76px;
+      padding:8px 22px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+
+    .header-logo{
+      position:absolute;
+      left:22px;
+      top:50%;
+      transform:translateY(-50%);
+    }
+
+    .header-logo img{
+      width:44px;
+      height:44px;
+      object-fit:contain;
+    }
+
+    .header-title{
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      width:100%;
+      pointer-events:none;
+    }
+
+    .header-title img{
+      height:54px;
+      width:auto;
+      max-width:420px;
+      object-fit:contain;
+    }
+
+    .header-link{
+      position:absolute;
+      right:22px;
+      top:50%;
+      transform:translateY(-50%);
+      font-size:11px;
+      font-weight:800;
+      text-transform:uppercase;
+      letter-spacing:.1em;
+      color:var(--muted);
+      transition:color .2s;
+    }
+    .header-link:hover{ color:var(--accent); }
+
+    /* ─── HERO ───────────────────────────────── */
+    .hero{
+      min-height:82vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      padding:48px 20px 72px;
+      overflow:hidden;
+      position:relative;
+      border-bottom:1px solid var(--line);
+    }
+
+    /* subtle ambient glow */
+    .hero::before{
+      content:"";
+      position:absolute;
+      top:50%;left:50%;
+      transform:translate(-50%,-58%);
+      width:560px; height:560px;
+      border-radius:50%;
+      background:radial-gradient(circle, rgba(255,90,54,.07) 0%, transparent 68%);
+      pointer-events:none;
+    }
+
+    .mist{
+      position:absolute;
+      inset:0;
+      pointer-events:none;
+      overflow:hidden;
+    }
+
+    .mist span{
+      position:absolute;
+      width:160px; height:160px;
+      border-radius:50%;
+      background:radial-gradient(circle, rgba(255,90,54,.09), transparent 70%);
+      animation:float 12s linear infinite;
+      filter:blur(12px);
+    }
+
+    .mist span:nth-child(1){left:7%;  top:22%; animation-duration:5s;}
+    .mist span:nth-child(2){left:60%; top:16%; animation-duration:4s;}
+    .mist span:nth-child(3){left:74%; top:56%; animation-duration:6s;}
+    .mist span:nth-child(4){left:16%; top:62%; animation-duration:4.5s;}
+    .mist span:nth-child(5){left:42%; top:38%; animation-duration:5.5s;}
+
+    @keyframes float{
+      0%  {transform:translateY(0)     translateX(0)    scale(1)}
+      50% {transform:translateY(-16px) translateX(10px) scale(1.07)}
+      100%{transform:translateY(0)     translateX(0)    scale(1)}
+    }
+
+    .hero-inner{
+      position:relative;
+      z-index:2;
+      max-width:680px;
+    }
+
+    .hero img.mascot{
+      width:160px;
+      margin:0 auto 24px;
+      object-fit:contain;
+      filter:drop-shadow(0 12px 40px rgba(255,90,54,.2));
+    }
+
+    .hero-kicker{
+      color:var(--accent);
+      font-size:11px;
+      font-weight:800;
+      letter-spacing:.18em;
+      text-transform:uppercase;
+      margin-bottom:14px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+    }
+    .hero-kicker::before,
+    .hero-kicker::after{
+      content:"";
+      display:inline-block;
+      width:16px; height:2px;
+      background:var(--accent);
+      flex-shrink:0;
+    }
+
+    .hero h1{
+      margin:0 0 14px;
+      font-size:clamp(2.8rem, 7vw, 5.4rem);
+      line-height:.88;
+      letter-spacing:-.05em;
+      text-transform:uppercase;
+    }
+
+    .hero p{
+      margin:0 auto 14px;
+      color:var(--muted);
+      line-height:1.7;
+      max-width:560px;
+      font-size:15px;
+    }
+
+    .hero .lead{
+      color:var(--text);
+      font-weight:700;
+      font-size:17px;
+    }
+
+    .trigger{
+      position:relative;
+      overflow:hidden;
+      margin-top:24px;
+      padding:14px 28px;
+      border:none;
+      background:var(--accent);
+      color:#fff;
+      font-size:12px;
+      font-weight:800;
+      font-family:inherit;
+      text-transform:uppercase;
+      letter-spacing:.08em;
+      cursor:pointer;
+      transition:transform .2s ease, background .2s ease, box-shadow .2s ease;
+    }
+
+    .trigger::before{
+      content:"";
+      position:absolute;
+      top:0; left:-120%;
+      width:80%; height:100%;
+      background:linear-gradient(90deg, transparent, rgba(255,255,255,.15), transparent);
+      transform:skewX(-20deg);
+      transition:left .45s ease;
+    }
+
+    .trigger:hover::before{ left:130%; }
+    .trigger:hover{
+      transform:translateY(-2px);
+      background:var(--accent2);
+      box-shadow:0 10px 28px rgba(0,0,0,.25);
+    }
+
+    /* ─── ORDER SECTION ──────────────────────── */
+    .order-wrap{
+      max-width:860px;
+      margin:0 auto 80px;
+      padding:64px 24px 0;
+      display:none;
+      opacity:0;
+      transform:translateY(24px);
+      transition:opacity .7s ease, transform .7s ease;
+      pointer-events:none;
+    }
+
+    .order-wrap.visible{
+      opacity:1;
+      transform:translateY(0);
+      pointer-events:auto;
+    }
+
+    .section-label{
+      font-size:10px;
+      font-weight:800;
+      letter-spacing:.2em;
+      text-transform:uppercase;
+      color:var(--accent);
+      margin-bottom:12px;
+    }
+
+    .order-head{
+      margin-bottom:32px;
+    }
+
+    .order-head h2{
+      font-size:clamp(1.8rem,4vw,2.8rem);
+      font-weight:800;
+      text-transform:uppercase;
+      letter-spacing:-.03em;
+      line-height:.9;
+      margin:0 0 10px;
+    }
+
+    .order-head p{
+      color:var(--muted);
+      font-size:15px;
+      line-height:1.6;
+      margin:0;
+    }
+
+    .order-shell{
+      position:relative;
+    }
+
+    .particles{
+      position:absolute;
+      inset:0;
+      pointer-events:none;
+      overflow:hidden;
+    }
+
+    .particle{
+      position:absolute;
+      width:10px; height:10px;
+      border-radius:50%;
+      background:radial-gradient(circle, rgba(255,255,255,.65), rgba(255,90,54,.15));
+      opacity:0;
+      filter:blur(1px);
+    }
+
+    .order-form{
+      background:rgba(16,17,20,.85);
+      border:1px solid var(--line);
+      padding:32px;
+      position:relative;
+      z-index:2;
+      backdrop-filter:blur(8px);
+    }
+
+    .order-form h2{
+      margin:0 0 6px;
+      font-size:22px;
+      font-weight:800;
+      text-transform:uppercase;
+      letter-spacing:-.02em;
+    }
+
+    .order-form > p{
+      color:var(--muted);
+      font-size:14px;
+      margin:0 0 24px;
+    }
+
+    .row{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:10px;
+      margin-bottom:10px;
+    }
+
+    .field-label{
+      font-size:10px;
+      font-weight:800;
+      letter-spacing:.16em;
+      text-transform:uppercase;
+      color:#5a5d62;
+      display:block;
+      margin-bottom:5px;
+    }
+
+    .order-form input,
+    .order-form textarea,
+    .order-form select{
+      width:100%;
+      padding:12px 13px;
+      border:1px solid var(--line);
+      background:#0d0f12;
+      color:#fff;
+      outline:none;
+      font:inherit;
+      font-size:14px;
+      transition:border-color .2s;
+      -webkit-appearance:none;
+    }
+
+    .order-form select{
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%235a5d62'/%3E%3C/svg%3E");
+      background-repeat:no-repeat;
+      background-position:right 13px center;
+      background-color:#0d0f12;
+      padding-right:34px;
+      cursor:pointer;
+    }
+
+    .order-form textarea{
+      min-height:110px;
+      resize:vertical;
+      margin-bottom:0;
+    }
+
+    .order-form input:focus,
+    .order-form textarea:focus,
+    .order-form select:focus{ border-color:var(--accent); }
+
+    .order-form input::placeholder,
+    .order-form textarea::placeholder{ color:#3e4044; }
+
+    .submit-btn{
+      position:relative;
+      overflow:hidden;
+      width:100%;
+      padding:14px;
+      border:none;
+      background:var(--green);
+      color:#fff;
+      font-size:13px;
+      font-weight:800;
+      font-family:inherit;
+      text-transform:uppercase;
+      letter-spacing:.08em;
+      cursor:pointer;
+      margin-top:10px;
+      transition:transform .2s ease, background .2s ease, box-shadow .2s ease;
+    }
+
+    .submit-btn::before{
+      content:"";
+      position:absolute;
+      top:0; left:-120%;
+      width:80%; height:100%;
+      background:linear-gradient(90deg, transparent, rgba(255,255,255,.15), transparent);
+      transform:skewX(-20deg);
+      transition:left .45s ease;
+    }
+
+    .submit-btn:hover::before{ left:130%; }
+    .submit-btn:hover{
+      transform:translateY(-2px);
+      background:var(--green2);
+      box-shadow:0 10px 28px rgba(0,0,0,.25);
+    }
+
+    #orderStatus{
+      margin-top:12px;
+      text-align:center;
+      color:var(--muted);
+      min-height:16px;
+      font-size:13px;
+    }
+
+    /* ─── FOOTER ─────────────────────────────── */
+    .footer{
+      border-top:1px solid var(--line);
+      padding:22px 24px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      flex-wrap:wrap;
+      gap:10px;
+    }
+
+    .footer-left{
+      color:#4a4d52;
+      font-size:12px;
+      text-transform:uppercase;
+      letter-spacing:.08em;
+    }
+
+    .footer-right a{
+      color:#4a4d52;
+      font-size:12px;
+      text-transform:uppercase;
+      letter-spacing:.08em;
+      transition:color .2s;
+    }
+    .footer-right a:hover{ color:var(--accent); }
+
+    /* ─── RESPONSIVE ─────────────────────────── */
+    @media (max-width:700px){
+      .header-inner{ height:58px; padding:8px 14px; }
+      .header-logo{ left:14px; }
+      .header-logo img{ width:36px; height:36px; }
+      .header-title img{ height:36px; max-width:230px; }
+      .header-link{ right:14px; font-size:10px; }
+
+      .hero img.mascot{ width:130px; }
+      .hero h1{ font-size:clamp(2.4rem,12vw,4rem); }
+
+      .order-wrap{ padding:48px 16px 0; }
+      .order-form{ padding:22px 16px; }
+      .row{ grid-template-columns:1fr; }
+
+      .footer{ flex-direction:column; align-items:flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="header-logo" href="index.html" aria-label="Biele Street home">
+        <img src="images/logo.png" alt="Biele Street logo">
+      </a>
+      <div class="header-title">
+        <img src="images/title.png" alt="Biele Street">
+      </div>
+      <a class="header-link" href="index.html">← Back</a>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="mist">
+      <span></span><span></span><span></span><span></span><span></span>
+    </div>
+
+    <div class="hero-inner">
+      <img class="mascot" src="images/Gemini_Generated_Image_wsblqlwsblqlwsbl.png" alt="Dirty Sanchez pickle mascot">
+      <div class="hero-kicker">Biele Street Special</div>
+      <h1>Pickle Shots.</h1>
+      <p class="lead">Salty, cold, and not here to waste your time.</p>
+      <p>
+        This little man exists for one reason: to point people straight at the good stuff.
+        Order ahead and pick them up without the back and forth.
+      </p>
+      <button class="trigger" onclick="revealOrder()">Order Now</button>
+    </div>
+  </section>
+
+  <div class="order-wrap" id="orderWrap">
+    <div class="order-head">
+      <div class="section-label">Pickup Order</div>
+      <h2>Send it in.<br>We'll have it ready.</h2>
+      <p>Fill out the form and we'll have your order waiting at the bar.</p>
+    </div>
+
+    <div class="order-shell">
+      <div class="particles" id="particles"></div>
+
+      <form class="order-form" id="orderForm">
+
+        <div class="row">
+          <div>
+            <label class="field-label" for="name">Your Name</label>
+            <input type="text" id="name" placeholder="First & last" required>
+          </div>
+          <div>
+            <label class="field-label" for="phone">Phone</label>
+            <input type="tel" id="phone" placeholder="(555) 000-0000" required>
+          </div>
+        </div>
+
+        <div class="row">
+          <div>
+            <label class="field-label" for="size">Shot Size</label>
+            <select id="size" required>
+              <option value="">Select a size</option>
+              <option value="Single">Single</option>
+              <option value="Double">Double</option>
+              <option value="Party Pack">Party Pack</option>
+            </select>
+          </div>
+          <div>
+            <label class="field-label" for="quantity">Quantity</label>
+            <input type="number" id="quantity" min="1" placeholder="How many?" required>
+          </div>
+        </div>
+
+        <div class="row">
+          <div>
+            <label class="field-label" for="pickupTime">Pickup Time</label>
+            <input type="text" id="pickupTime" placeholder="e.g. 8:30 PM tonight" required>
+          </div>
+          <div>
+            <label class="field-label" for="custEmail">Your Email <span style="color:#3e4044;font-weight:400;text-transform:none;letter-spacing:0;">(optional — get notified when ready)</span></label>
+            <input type="email" id="custEmail" placeholder="email@example.com">
+          </div>
+        </div>
+
+        <div class="notes-row" style="margin-bottom:0;">
+          <label class="field-label" for="notes">Extra Details</label>
+          <textarea id="notes" placeholder="Anything else for your order…"></textarea>
+        </div>
+
+        <button class="submit-btn" type="submit">Send Pickup Order</button>
+        <div id="orderStatus"></div>
+      </form>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <span class="footer-left">Biele Street &bull; Festus, Missouri</span>
+    <div class="footer-right">
+      <a href="index.html">← Back to Home</a>
+    </div>
+  </footer>
+
+  <script>
+    const GAS_URL = "PASTE_YOUR_GAS_URL";
+    let revealed = false;
+
+    function revealOrder(){
+      if(revealed) return;
+      revealed = true;
+
+      const particlesWrap = document.getElementById("particles");
+      const wrap          = document.getElementById("orderWrap");
+
+      // fire particles
+      particlesWrap.innerHTML = "";
+      for(let i=0;i<60;i++){
+        const p = document.createElement("span");
+        p.className = "particle";
+        p.style.left   = Math.random()*100+"%";
+        p.style.top    = Math.random()*100+"%";
+        p.style.animation = `burst ${0.8+Math.random()*.8}s ease forwards`;
+        p.style.animationDelay = (Math.random()*.3)+"s";
+        particlesWrap.appendChild(p);
+      }
+      const style = document.createElement("style");
+      style.innerHTML = `@keyframes burst{0%{opacity:0;transform:scale(.2)}20%{opacity:.8}100%{opacity:0;transform:scale(1.8)}}`;
+      document.head.appendChild(style);
+
+      // show the section (invisible, no space reserved before this)
+      wrap.style.display = 'block';
+
+      // scroll to it, then after a short buffer fade it in
+      setTimeout(()=>{
+        wrap.scrollIntoView({ behavior:"smooth", block:"start" });
+      }, 60);
+
+      setTimeout(()=>{
+        wrap.classList.add("visible");
+      }, 250);
+    }
+
+    document.getElementById("orderForm").addEventListener("submit", async function(e){
+      e.preventDefault();
+
+      const status  = document.getElementById("orderStatus");
+      const payload = {
+        action:     "pickupOrder",
+        name:       document.getElementById("name").value.trim(),
+        phone:      document.getElementById("phone").value.trim(),
+        size:       document.getElementById("size").value.trim(),
+        quantity:   document.getElementById("quantity").value.trim(),
+        pickupTime: document.getElementById("pickupTime").value.trim(),
+        notesShort: document.getElementById("notesShort") ? document.getElementById("notesShort").value.trim() : "",
+        notes:      document.getElementById("notes").value.trim(),
+        email:      document.getElementById("custEmail") ? document.getElementById("custEmail").value.trim() : ""
+      };
+
+      if(!payload.name||!payload.phone||!payload.size||!payload.quantity||!payload.pickupTime){
+        status.textContent="Fill out the required fields.";
+        return;
+      }
+
+      status.textContent="Sending...";
+
+      try{
+        const res  = await fetch(GAS_URL,{
+          method:"POST",
+          headers:{"Content-Type":"text/plain;charset=utf-8"},
+          body:JSON.stringify(payload)
+        });
+        const data = await res.json();
+
+        if(data.ok){
+          document.getElementById("orderForm").reset();
+          status.textContent="Pickup order sent. See you soon.";
+        } else {
+          status.textContent = data.message||"Something went wrong.";
+        }
+      } catch{
+        status.textContent="Error sending order.";
+      }
+    });
+  </script>
+
+</body>
+</html>
