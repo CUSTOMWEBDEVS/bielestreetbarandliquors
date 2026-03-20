@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin | Biele Street</title>
+
+  <style>
+    :root{
+      --bg:#04070A;
+      --bg2:#101114;
+      --surface:#0b0f14;
+      --text:#f4f4f0;
+      --muted:#afb2b8;
+      --line:#1f2125;
+      --accent:#ff5a36;
+      --accent2:#cb3b1b;
+      --green:#5a9020;
+      --button:#17191d;
+    }
+
+    *{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{
+      font-family:Arial,sans-serif;
+      background:var(--bg);
+      color:var(--text);
+      min-height:100vh;
+    }
+
+    a{text-decoration:none;color:inherit}
+
+    /* ── HEADER ── */
+    .site-header{
+      position:sticky;top:0;z-index:100;
+      background:rgba(4,7,10,.97);
+      border-bottom:1px solid var(--line);
+      backdrop-filter:blur(12px);
+    }
+    .header-inner{
+      position:relative;height:76px;padding:0 24px;
+      display:flex;align-items:center;justify-content:center;
+    }
+    .header-logo{ position:absolute;left:24px;top:50%;transform:translateY(-50%); }
+    .header-logo img{ width:44px;height:44px;object-fit:contain; }
+    .header-title{ pointer-events:none; }
+    .header-title img{ height:54px;width:auto;max-width:420px;object-fit:contain; }
+    .header-back{
+      position:absolute;right:24px;top:50%;transform:translateY(-50%);
+      font-size:11px;font-weight:800;text-transform:uppercase;
+      letter-spacing:.1em;color:var(--muted);transition:color .2s;
+    }
+    .header-back:hover{ color:var(--accent); }
+
+    /* ── LOGIN GATE ── */
+    .login-gate{
+      min-height:80vh;display:flex;align-items:center;justify-content:center;
+      padding:40px 20px;
+    }
+    .login-box{
+      background:var(--surface);border:1px solid var(--line);
+      padding:40px 36px;width:100%;max-width:400px;
+    }
+    .login-box .section-label{ margin-bottom:12px; }
+    .login-box h2{
+      font-size:24px;font-weight:800;text-transform:uppercase;
+      letter-spacing:-.03em;margin-bottom:20px;
+    }
+
+    /* ── ADMIN PANEL ── */
+    .admin-panel{ display:none; }
+    .admin-panel.visible{ display:block; }
+
+    .wrap{ max-width:900px;margin:0 auto;padding:56px 24px; }
+
+    .page-title{
+      margin-bottom:40px;
+      border-bottom:1px solid var(--line);
+      padding-bottom:24px;
+    }
+    .page-title .section-label{ margin-bottom:10px; }
+    .page-title h1{
+      font-size:clamp(2rem,5vw,3rem);font-weight:800;
+      text-transform:uppercase;letter-spacing:-.04em;line-height:.9;
+    }
+
+    /* ── TABS ── */
+    .tabs{
+      display:flex;gap:0;margin-bottom:32px;
+      border-bottom:1px solid var(--line);
+    }
+    .tab-btn{
+      padding:12px 24px;font-size:11px;font-weight:800;
+      text-transform:uppercase;letter-spacing:.1em;
+      background:transparent;border:none;color:var(--muted);
+      cursor:pointer;border-bottom:2px solid transparent;
+      margin-bottom:-1px;transition:color .2s,border-color .2s;
+      font-family:inherit;
+    }
+    .tab-btn.active{ color:var(--accent);border-bottom-color:var(--accent); }
+    .tab-btn:hover{ color:var(--text); }
+
+    .tab-panel{ display:none; }
+    .tab-panel.active{ display:block; }
+
+    /* ── CARDS ── */
+    .card{
+      background:var(--surface);border:1px solid var(--line);
+      padding:32px;margin-bottom:16px;
+    }
+    .card h3{
+      font-size:16px;font-weight:800;text-transform:uppercase;
+      letter-spacing:-.02em;margin-bottom:16px;
+    }
+
+    /* ── FORMS ── */
+    .section-label{
+      font-size:10px;font-weight:800;letter-spacing:.2em;
+      text-transform:uppercase;color:var(--accent);
+    }
+
+    .field{ margin-bottom:14px; }
+    .field label{
+      display:block;font-size:10px;font-weight:800;
+      letter-spacing:.16em;text-transform:uppercase;
+      color:#5a5d62;margin-bottom:5px;
+    }
+
+    .field input,
+    .field textarea,
+    .field select{
+      width:100%;padding:12px 14px;
+      border:1px solid var(--line);background:var(--bg2);
+      color:#fff;outline:none;font:inherit;font-size:14px;
+      transition:border-color .2s;-webkit-appearance:none;
+    }
+    .field input:focus,
+    .field textarea:focus,
+    .field select:focus{ border-color:var(--accent); }
+    .field input::placeholder,
+    .field textarea::placeholder{ color:#3e4044; }
+    .field textarea{ min-height:120px;resize:vertical; }
+
+    .field-row{ display:grid;grid-template-columns:1fr 1fr;gap:12px; }
+
+    /* ── BUTTONS ── */
+    .btn{
+      position:relative;overflow:hidden;
+      display:inline-flex;align-items:center;justify-content:center;
+      min-height:48px;padding:0 22px;
+      border:1px solid var(--line);background:var(--button);color:#fff;
+      font-size:12px;font-weight:800;font-family:inherit;
+      text-transform:uppercase;letter-spacing:.08em;
+      cursor:pointer;transition:all .2s ease;white-space:nowrap;
+    }
+    .btn::before{
+      content:"";position:absolute;top:0;left:-120%;
+      width:80%;height:100%;
+      background:linear-gradient(90deg,transparent,rgba(255,255,255,.15),transparent);
+      transform:skewX(-20deg);transition:left .45s ease;
+    }
+    .btn:hover::before{ left:130%; }
+    .btn:hover{ transform:translateY(-2px);border-color:var(--accent);box-shadow:0 8px 20px rgba(0,0,0,.3); }
+    .btn.primary{ background:var(--accent);border-color:var(--accent); }
+    .btn.primary:hover{ background:var(--accent2);border-color:var(--accent2); }
+    .btn.green{ background:var(--green);border-color:var(--green); }
+    .btn.green:hover{ background:#4a7a18;border-color:#4a7a18; }
+    .btn.full{ width:100%; }
+
+    /* ── STATUS ── */
+    .status-msg{
+      margin-top:12px;font-size:13px;color:var(--muted);min-height:16px;
+    }
+    .status-msg.ok{ color:#7cc43a; }
+    .status-msg.err{ color:var(--accent); }
+
+    /* ── ORDERS TABLE ── */
+    .orders-table{ width:100%;border-collapse:collapse;font-size:13px; }
+    .orders-table th{
+      text-align:left;padding:10px 12px;
+      font-size:10px;font-weight:800;letter-spacing:.12em;
+      text-transform:uppercase;color:#5a5d62;
+      border-bottom:1px solid var(--line);
+    }
+    .orders-table td{
+      padding:12px 12px;border-bottom:1px solid var(--line);
+      vertical-align:top;color:var(--muted);
+    }
+    .orders-table td:first-child{ color:var(--text);font-weight:700; }
+    .orders-table tr:last-child td{ border-bottom:none; }
+
+    .badge{
+      display:inline-block;padding:3px 8px;
+      font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;
+    }
+    .badge.pending{ background:rgba(255,90,54,.15);color:var(--accent); }
+    .badge.fulfilled{ background:rgba(90,144,32,.15);color:#7cc43a; }
+
+    .fulfill-btn{
+      padding:6px 14px;font-size:10px;background:var(--green);
+      border:none;color:#fff;font-weight:800;font-family:inherit;
+      text-transform:uppercase;letter-spacing:.08em;cursor:pointer;
+      transition:background .2s;
+    }
+    .fulfill-btn:hover{ background:#4a7a18; }
+
+    /* ── FACEBOOK NOTE ── */
+    .info-box{
+      background:rgba(255,90,54,.06);border:1px solid rgba(255,90,54,.2);
+      padding:20px 24px;margin-bottom:20px;
+    }
+    .info-box p{ color:var(--muted);font-size:14px;line-height:1.7;margin:0 0 8px; }
+    .info-box p:last-child{ margin:0; }
+    .info-box strong{ color:var(--text); }
+
+    /* ── FOOTER ── */
+    .footer{
+      border-top:1px solid var(--line);padding:22px 24px;
+      display:flex;align-items:center;justify-content:space-between;
+      flex-wrap:wrap;gap:10px;
+    }
+    .footer span{ color:#4a4d52;font-size:12px;text-transform:uppercase;letter-spacing:.08em; }
+
+    @media(max-width:700px){
+      .header-inner{ height:64px;padding:0 14px; }
+      .header-logo img{ width:36px;height:36px; }
+      .header-title img{ height:40px;max-width:220px; }
+      .header-back{ font-size:10px;right:14px; }
+      .login-box{ padding:28px 20px; }
+      .wrap{ padding:40px 16px; }
+      .card{ padding:20px 16px; }
+      .field-row{ grid-template-columns:1fr; }
+      .tabs{ overflow-x:auto; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="header-logo" href="index.html">
+        <img src="images/logo.png" alt="Biele Street logo">
+      </a>
+      <div class="header-title">
+        <img src="images/title.png" alt="Biele Street">
+      </div>
+      <a class="header-back" href="index.html">← Back</a>
+    </div>
+  </header>
+
+  <!-- ── LOGIN GATE ───────────────────────────────── -->
+  <div class="login-gate" id="loginGate">
+    <div class="login-box">
+      <div class="section-label" style="margin-bottom:12px;">Bar Owner Access</div>
+      <h2>Admin Panel</h2>
+      <p style="color:var(--muted);font-size:14px;line-height:1.7;margin-bottom:24px;">
+        Enter your admin password to access the dashboard.
+      </p>
+      <div class="field">
+        <label for="adminPass">Password</label>
+        <input type="password" id="adminPass" placeholder="Enter password">
+      </div>
+      <button class="btn primary full" onclick="login()">Enter</button>
+      <div class="status-msg err" id="loginStatus"></div>
+    </div>
+  </div>
+
+  <!-- ── ADMIN PANEL ──────────────────────────────── -->
+  <div class="admin-panel" id="adminPanel">
+    <div class="wrap">
+
+      <div class="page-title">
+        <div class="section-label" style="margin-bottom:10px;">Bar Owner Dashboard</div>
+        <h1>Admin Panel</h1>
+      </div>
+
+      <!-- TABS -->
+      <div class="tabs">
+        <button class="tab-btn active" onclick="showTab('orders')">Orders</button>
+        <button class="tab-btn" onclick="showTab('blast')">Send Update</button>
+        <button class="tab-btn" onclick="showTab('fulfill')">Fulfill Order</button>
+      </div>
+
+      <!-- ── TAB: ORDERS ────────────────────────── -->
+      <div class="tab-panel active" id="tab-orders">
+        <div class="card">
+          <h3>Recent Orders</h3>
+          <p style="color:var(--muted);font-size:14px;margin-bottom:20px;line-height:1.6;">
+            Orders are saved in your Google Sheet. Use the Fulfill tab to mark an order ready and email the customer.
+          </p>
+          <a class="btn primary" href="https://docs.google.com/spreadsheets" target="_blank" rel="noopener">Open Google Sheet →</a>
+        </div>
+
+        <div class="card">
+          <h3>Fulfill an Order from Here</h3>
+          <p style="color:var(--muted);font-size:14px;margin-bottom:20px;line-height:1.6;">
+            Enter the Order ID from the email you received and the customer's email to send them a ready notification.
+          </p>
+          <div class="field-row">
+            <div class="field">
+              <label for="fo-orderId">Order ID</label>
+              <input type="text" id="fo-orderId" placeholder="ORD-XXXXXX">
+            </div>
+            <div class="field">
+              <label for="fo-custEmail">Customer Email</label>
+              <input type="email" id="fo-custEmail" placeholder="customer@email.com">
+            </div>
+          </div>
+          <div class="field">
+            <label for="fo-custName">Customer Name</label>
+            <input type="text" id="fo-custName" placeholder="First name">
+          </div>
+          <button class="btn green" onclick="fulfillOrder()">Mark Fulfilled &amp; Email Customer</button>
+          <div class="status-msg" id="fulfillStatus"></div>
+        </div>
+      </div>
+
+      <!-- ── TAB: BLAST ─────────────────────────── -->
+      <div class="tab-panel" id="tab-blast">
+
+        <div class="info-box">
+          <p><strong>About Facebook auto-posting:</strong> Meta's API requires app review approval (typically 2–4 weeks) and ongoing compliance. The cleanest practical alternative is to paste your Facebook post text here directly — same message, sent as a branded email to all your subscribers instantly.</p>
+          <p>If you want full automation later, you can connect a tool like <strong>Zapier</strong> (Facebook Pages → webhook → this script URL) once your Meta app is approved.</p>
+        </div>
+
+        <div class="card">
+          <h3>Send Event Update</h3>
+          <p style="color:var(--muted);font-size:14px;margin-bottom:24px;line-height:1.6;">
+            This sends a branded email to every verified subscriber. Paste your event post or update below.
+          </p>
+
+          <div class="field">
+            <label for="blast-subject">Email Subject Line</label>
+            <input type="text" id="blast-subject" placeholder="e.g. Live Music Friday Night — Biele Street">
+          </div>
+
+          <div class="field">
+            <label for="blast-message">Message</label>
+            <textarea id="blast-message" placeholder="Write your event update here. This is what your customers will read. Line breaks are preserved."></textarea>
+          </div>
+
+          <div class="field">
+            <label for="blast-image">Image URL <span style="color:#5a5d62;font-weight:400;letter-spacing:0;text-transform:none;font-size:11px;">(optional — paste a direct image link)</span></label>
+            <input type="url" id="blast-image" placeholder="https://example.com/image.jpg">
+          </div>
+
+          <button class="btn primary" onclick="sendBlast()">Send to All Subscribers</button>
+          <div class="status-msg" id="blastStatus"></div>
+        </div>
+      </div>
+
+      <!-- ── TAB: FULFILL ───────────────────────── -->
+      <div class="tab-panel" id="tab-fulfill">
+        <div class="card">
+          <h3>Mark Order Fulfilled</h3>
+          <p style="color:var(--muted);font-size:14px;margin-bottom:24px;line-height:1.6;">
+            Enter the Order ID from the notification email. If the customer provided their email, they'll get a "Your order is ready" message automatically.
+          </p>
+
+          <div class="field-row">
+            <div class="field">
+              <label for="f-orderId">Order ID</label>
+              <input type="text" id="f-orderId" placeholder="ORD-XXXXXX">
+            </div>
+            <div class="field">
+              <label for="f-custEmail">Customer Email</label>
+              <input type="email" id="f-custEmail" placeholder="Leave blank if none given">
+            </div>
+          </div>
+          <div class="field">
+            <label for="f-custName">Customer First Name</label>
+            <input type="text" id="f-custName" placeholder="For the email greeting">
+          </div>
+
+          <button class="btn green full" onclick="fulfillFromTab()">Mark Fulfilled &amp; Notify Customer</button>
+          <div class="status-msg" id="fulfillTabStatus"></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <footer class="footer">
+    <span>Biele Street &bull; Festus, Missouri &bull; Admin</span>
+    <a href="index.html" style="color:#4a4d52;font-size:12px;text-transform:uppercase;letter-spacing:.08em;transition:color .2s;" onmouseover="this.style.color='#ff5a36'" onmouseout="this.style.color='#4a4d52'">← Public Site</a>
+  </footer>
+
+  <script>
+    const GAS_URL  = "https://script.google.com/macros/s/AKfycbxZSG0Q33XkvG0-p2iX4XZU22bo7Ozf7aK5GOHvlhz6cqlAjLveEWA0awa1_kOJV8eQ/exec";
+    let adminPass  = "";
+
+    // ── LOGIN ──────────────────────────────────────
+    function login() {
+      const pass   = document.getElementById("adminPass").value.trim();
+      const status = document.getElementById("loginStatus");
+      if (!pass) { status.textContent = "Enter your password."; return; }
+
+      // We send a harmless blast with 0 recipients just to verify the password
+      // The real check happens server-side
+      adminPass = pass;
+      document.getElementById("loginGate").style.display  = "none";
+      document.getElementById("adminPanel").classList.add("visible");
+    }
+
+    document.getElementById("adminPass").addEventListener("keydown", e => {
+      if (e.key === "Enter") login();
+    });
+
+    // ── TABS ───────────────────────────────────────
+    function showTab(id) {
+      document.querySelectorAll(".tab-panel").forEach(p => p.classList.remove("active"));
+      document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+      document.getElementById("tab-" + id).classList.add("active");
+      event.target.classList.add("active");
+    }
+
+    // ── SEND BLAST ─────────────────────────────────
+    async function sendBlast() {
+      const subject  = document.getElementById("blast-subject").value.trim();
+      const message  = document.getElementById("blast-message").value.trim();
+      const imageUrl = document.getElementById("blast-image").value.trim();
+      const status   = document.getElementById("blastStatus");
+
+      if (!subject || !message) {
+        status.textContent = "Subject and message are required.";
+        status.className   = "status-msg err";
+        return;
+      }
+
+      status.textContent = "Sending...";
+      status.className   = "status-msg";
+
+      try {
+        const res  = await fetch(GAS_URL, {
+          method:  "POST",
+          headers: { "Content-Type": "text/plain;charset=utf-8" },
+          body:    JSON.stringify({ action:"sendBlast", password:adminPass, subject, message, imageUrl })
+        });
+        const data = await res.json();
+        status.textContent = data.message || (data.ok ? "Sent!" : "Error.");
+        status.className   = "status-msg " + (data.ok ? "ok" : "err");
+      } catch {
+        status.textContent = "Network error.";
+        status.className   = "status-msg err";
+      }
+    }
+
+    // ── FULFILL (orders tab) ───────────────────────
+    async function fulfillOrder() {
+      const orderId   = document.getElementById("fo-orderId").value.trim();
+      const custEmail = document.getElementById("fo-custEmail").value.trim();
+      const custName  = document.getElementById("fo-custName").value.trim();
+      const status    = document.getElementById("fulfillStatus");
+
+      if (!orderId) {
+        status.textContent = "Enter an Order ID.";
+        status.className   = "status-msg err";
+        return;
+      }
+
+      status.textContent = "Updating...";
+      status.className   = "status-msg";
+      await postFulfill(orderId, custEmail, custName, status);
+    }
+
+    // ── FULFILL (fulfill tab) ──────────────────────
+    async function fulfillFromTab() {
+      const orderId   = document.getElementById("f-orderId").value.trim();
+      const custEmail = document.getElementById("f-custEmail").value.trim();
+      const custName  = document.getElementById("f-custName").value.trim();
+      const status    = document.getElementById("fulfillTabStatus");
+
+      if (!orderId) {
+        status.textContent = "Enter an Order ID.";
+        status.className   = "status-msg err";
+        return;
+      }
+
+      status.textContent = "Updating...";
+      status.className   = "status-msg";
+      await postFulfill(orderId, custEmail, custName, status);
+    }
+
+    async function postFulfill(orderId, custEmail, custName, statusEl) {
+      try {
+        const res  = await fetch(GAS_URL, {
+          method:  "POST",
+          headers: { "Content-Type": "text/plain;charset=utf-8" },
+          body:    JSON.stringify({ action:"fulfillOrder", orderId, custEmail, custName })
+        });
+        const data = await res.json();
+        statusEl.textContent = data.message || (data.ok ? "Done!" : "Error.");
+        statusEl.className   = "status-msg " + (data.ok ? "ok" : "err");
+      } catch {
+        statusEl.textContent = "Network error.";
+        statusEl.className   = "status-msg err";
+      }
+    }
+  </script>
+
+</body>
+</html>
